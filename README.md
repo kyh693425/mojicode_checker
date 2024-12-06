@@ -11,6 +11,7 @@
 1. **エンコーディング検出**
    - UTF-8, UTF-16, UTF-32（BOM付き）や、`utf-8`, `shift_jis`, `euc-jp`, `latin-1`などの一般的な文字エンコーディングを試行します。
 
+
 2. **ディレクトリ内の特定拡張子のファイルをスキャン**
    - `.java`, `.csv`, `.txt`, `.sql`などの拡張子を選択可能です。
    - 任意の拡張子も指定できます（例: `.log`, `.xml`）。
@@ -62,7 +63,7 @@
 
 6. **結果の確認**
    ファイルのパス、名前、およびエンコーディングがコンソールに表示されます。
-   必要に応じてCSV形式で結果を保存できます。
+
 
 ---
 
@@ -74,7 +75,6 @@
 C:\example\directory, sample1.txt, utf-8
 C:\example\directory, sample2.sql, shift_jis
 C:\example\directory, sample3.csv, utf-16
-```
 
 ---
 
