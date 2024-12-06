@@ -75,6 +75,7 @@
 C:\example\directory, sample1.txt, utf-8
 C:\example\directory, sample2.sql, shift_jis
 C:\example\directory, sample3.csv, utf-16
+```
 
 ---
 
