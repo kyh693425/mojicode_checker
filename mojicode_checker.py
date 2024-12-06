@@ -57,15 +57,16 @@ def print_file_info(file_info_list):
         for file_info in file_info_list:
             print(f"{file_info[0]}, {file_info[1]}, {file_info[2]}")
     except OSError as e:
-        print(f"情報出力中にエラーが発生しました")
+        print("情報出力中にエラーが発生しました")
         print(f"エラー詳細: {e}")
 
-def gather_file_info(directory_path):
+def gather_file_info(directory_path, file_extension):
     file_info_list = []
     for root, dirs, files in os.walk(directory_path):
         for file in files:
-            # sql 파일만 대상
-            if file.endswith('.txt'):
+            # file_extension이 None이면 모든 파일 대상
+            # 아니라면 해당 확장자로 끝나는 파일만 대상
+            if file_extension is None or file.endswith(file_extension):
                 file_path = os.path.join(root, file)
                 encoding = detect_encoding(file_path)
                 file_info_list.append([root, file, encoding])
@@ -73,15 +74,41 @@ def gather_file_info(directory_path):
 
 def main():
     directory_path = input("検査するディレクトリのパスを入力: ")
-    # 필요하다면 CSV 출력 경로를 받을 수 있습니다.
-    # output_csv_path = input("CSVを保存するファイルパスを入力: ")
-    
-    file_info_list = gather_file_info(directory_path)
+
+    print("ファイル拡張子を選択してください。")
+    print("1) .java\n2) .csv\n3) .txt\n4) .sql\n5) すべてのファイル\n6) その他")
+
+    choice = input("番号を入力してください。: ").strip()
+
+    # ファイル拡張子
+    if choice == '1':
+        file_extension = '.java'
+    elif choice == '2':
+        file_extension = '.csv'
+    elif choice == '3':
+        file_extension = '.txt'
+    elif choice == '4':
+        file_extension = '.sql'
+    elif choice == '5':
+        file_extension = None  # すべてのファイル
+    elif choice == '6':
+        custom_ext = input("ファイル拡張子を入力してください。 (例: .xx 또는 xx): ").strip()
+        # '.' 入力がない場合、'.'をつけます
+        if not custom_ext.startswith('.'):
+            custom_ext = '.' + custom_ext
+        file_extension = custom_ext
+    else:
+        print("正しい番号が入力されなかったため、すべてのファイルを対象とします。")
+        file_extension = None
+
+    file_info_list = gather_file_info(directory_path, file_extension)
     print_file_info(file_info_list)
 
-    # 필요시 CSV에 출력
-    # write_to_csv(file_info_list, output_csv_path)
-    # print(f"情報が {output_csv_path} に出力されました。")
+    # CSV로 출력할 경우 주석 해제
+    # output_csv_path = input("CSVを保存するファイルパスを入力(생략시 Enter): ").strip()
+    # if output_csv_path:
+    #     write_to_csv(file_info_list, output_csv_path)
+    #     print(f"情報が {output_csv_path} に出力されました。")
 
     print("処理終了")
 
