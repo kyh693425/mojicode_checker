@@ -1,9 +1,9 @@
 
-# 📂 File Encoding Detector
+# 📂 mojicode_checker
 
 ## 📋 概要
-**File Encoding Detector**は、指定されたディレクトリ内のテキストファイル（`.txt`）の文字エンコーディングを検出し、その情報を出力するPythonスクリプトです。  
-BOM（Byte Order Mark）や一般的な文字エンコーディングを基準にエンコーディングを特定します。
+**mojicode_checker**は、指定されたディレクトリ内のファイルの文字エンコーディングを検出し、その情報を出力するPythonスクリプトです。  
+特定の拡張子を選択でき、BOM（Byte Order Mark）や一般的な文字エンコーディングを基準にエンコーディングを特定します。
 
 ---
 
@@ -11,12 +11,13 @@ BOM（Byte Order Mark）や一般的な文字エンコーディングを基準�
 1. **エンコーディング検出**
    - UTF-8, UTF-16, UTF-32（BOM付き）や、`utf-8`, `shift_jis`, `euc-jp`, `latin-1`などの一般的な文字エンコーディングを試行します。
 
-2. **ディレクトリ内のテキストファイルをスキャン**
-   - 指定されたディレクトリ内のすべてのテキストファイルを再帰的に検査します。
+
+2. **ディレクトリ内の特定拡張子のファイルをスキャン**
+   - `.java`, `.csv`, `.txt`, `.sql`などの拡張子を選択可能です。
+   - 任意の拡張子も指定できます（例: `.log`, `.xml`）。
 
 3. **情報の出力**
    - ファイルのパス、名前、エンコーディング情報をコンソールに表示します。
-   - 必要に応じてCSVファイルに結果を保存できます。
 
 ---
 
@@ -47,9 +48,22 @@ BOM（Byte Order Mark）や一般的な文字エンコーディングを基準�
    検査するディレクトリのパスを入力: C:\example\directory
    ```
 
-5. **結果の確認**
+5. **ファイル拡張子の選択**
+   - 提示されたオプションの中から、検査対象のファイル拡張子を選択します。
+   - 例:
+     ```
+     ファイル拡張子を選択してください。
+     1) .java
+     2) .csv
+     3) .txt
+     4) .sql
+     5) すべてのファイル
+     6) その他
+     ```
+
+6. **結果の確認**
    ファイルのパス、名前、およびエンコーディングがコンソールに表示されます。
-   必要に応じてCSV形式で結果を保存できます。
+
 
 ---
 
@@ -59,9 +73,9 @@ BOM（Byte Order Mark）や一般的な文字エンコーディングを基準�
 ```
 ファイルパス, ファイル名, ファイル文字コード
 C:\example\directory, sample1.txt, utf-8
-C:\example\directory, sample2.txt, shift_jis
-C:\example\directory, sample3.txt, utf-16
-```
+C:\example\directory, sample2.sql, shift_jis
+C:\example\directory, sample3.csv, utf-16
+
 ---
 
 ## 📄 コード解説
@@ -74,20 +88,20 @@ C:\example\directory, sample3.txt, utf-16
 2. **`try_encoding(file_path, encodings)`**
    - 指定されたエンコーディングリストを順に試行し、成功したエンコーディングを返します。
 
-3. **`write_to_csv(file_info_list, output_csv_path)`**
+3. **`gather_file_info(directory_path, file_extension)`**
+   - 指定されたディレクトリ内のすべてのファイルまたは特定の拡張子のファイルを再帰的に探索し、エンコーディング情報を収集します。
+
+4. **`write_to_csv(file_info_list, output_csv_path)`**
    - 検出されたファイル情報をCSV形式で保存します。
 
-4. **`print_file_info(file_info_list)`**
+5. **`print_file_info(file_info_list)`**
    - ファイルのパス、名前、エンコーディングをコンソールに表示します。
-
-5. **`gather_file_info(directory_path)`**
-   - 指定されたディレクトリ内のすべての`.txt`ファイルを再帰的に探索し、エンコーディング情報を収集します。
 
 ---
 
 ## ⚠️ 注意事項
 1. **検査対象ファイル**
-   - `.txt`拡張子のファイルのみが対象です。他の拡張子は無視されます。
+   - 任意の拡張子を指定できますが、未指定の場合はすべてのファイルが対象となります。
 
 2. **権限エラー**
    - アクセス権のないファイルまたはフォルダにアクセスするとエラーが発生する可能性があります。
